@@ -1,0 +1,48 @@
+<ng-container>
+  <p *ngIf="!isFirstLevelDropdown" class="p2-regular mb-2">{{filter.title}}</p>
+  <dropdown
+    #filterDropdown
+    [content]="filterDropdownContent"
+    [isCloseOnClick]="!multipleFiltersBlock"
+    (isOpenChange)="emitFiltersOnClose($event)">
+    <dropdown-button
+      [ngClass]="{'first-level-dropdown-button': isFirstLevelDropdown}"
+      (click)="handleDropdownButtonClick(filterDropdown, $event)"
+      [isOpen]="filterDropdown.isOpen">
+      <ng-container slot="title">
+        <div class="d-flex">
+          <svg-icon *ngIf="isFirstLevelDropdown" class="dropdown-button-icon me-2 d-sm-block" [name]="icon"></svg-icon>
+          {{ title }}
+        </div>
+      </ng-container>
+    </dropdown-button>
+    <div *ngIf="isFirstLevelDropdown"
+         class="first-level-dropdown-button-small"
+         (click)="handleDropdownButtonClick(filterDropdown, $event)">
+      <svg-icon class="dropdown-button-icon d-md-none d-sm-block" [name]="icon" [ngClass]="{'disabled': !filterDropdown.isOpen}"></svg-icon>
+    </div>
+    <ng-template #filterDropdownContent>
+      <dropdown-content
+        class="filter-dropdown-content-wrapper"
+        [ngClass]="{
+        'multiple-filters-dropdown-wrapper': multipleFiltersBlock,
+        'first-level-dropdown-wrapper': isFirstLevelDropdown && !multipleFiltersBlock}"
+                               [theme]=" multipleFiltersBlock ? dropdownTheme.dark : dropdownTheme.light">
+        <ng-container *ngIf="!multipleFiltersBlock">
+          <scrollbar class="filter-dropdown-scrollbar">
+            <dropdown-list
+              [selectedItems]="selectedItems"
+              [isCheckboxesUsed]="true"
+              [isMultiple]="filter.isMulti"
+              [optionsList]="options"
+              (changes)="selectItems($event)"
+            ></dropdown-list>
+          </scrollbar>
+        </ng-container>
+        <ng-container *ngIf="multipleFiltersBlock">
+          <ng-content></ng-content>
+        </ng-container>
+      </dropdown-content>
+    </ng-template>
+  </dropdown>
+</ng-container>

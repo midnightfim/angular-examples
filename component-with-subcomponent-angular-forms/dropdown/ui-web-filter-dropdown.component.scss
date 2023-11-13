@@ -1,0 +1,60 @@
+@import "../../constants";
+@import "../../breakpoints";
+@import "~bootstrap/scss/mixins";
+
+.multiple-filters-dropdown-wrapper {
+  width: 408px;
+  padding: 40px;
+  @include media-breakpoint-between(md, xl) {
+    width: 404px;
+  }
+  @include media-breakpoint-down(md) {
+    padding: 24px;
+    width: 288px;
+  }
+}
+
+.first-level-dropdown-button {
+  width: 196px !important;
+  @include media-breakpoint-down(md) {
+    display: none;
+  }
+}
+
+.first-level-dropdown-button-small {
+  display: none;
+
+  @include media-breakpoint-down(md) {
+    width: 18px;
+    height: 18px;
+    display: block;
+    bottom: 4px;
+    position: relative;
+  }
+}
+
+.dropdown-button-icon {
+  width: 22px;
+  height: 22px;
+
+  &.disabled {
+    opacity: 0.6;
+  }
+}
+
+.first-level-dropdown-wrapper {
+  @include media-breakpoint-down(md) {
+    width: 196px;
+    left: -140px;
+  }
+}
+
+.filter-dropdown-content-wrapper {
+  z-index: 3;
+
+  .filter-dropdown-scrollbar {
+    max-height: 180px;
+    position: relative;
+    z-index: 2;
+  }
+}

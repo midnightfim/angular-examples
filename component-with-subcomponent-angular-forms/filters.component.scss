@@ -1,0 +1,33 @@
+@import "../../constants";
+@import "../../breakpoints";
+@import "~bootstrap/scss/mixins";
+
+.reset-all-button {
+  margin-top: 40px;
+}
+
+.filter-dropdown-button-wrapper {
+  @include media-breakpoint-between(md, xl) {
+    margin-left: 0.75rem !important;
+  }
+  @include media-breakpoint-down(md) {
+    margin-left: 10px;
+  }
+}
+
+.filter-toggle-title {
+  color: $secondary-gray;
+}
+
+.subview-reset {
+  cursor: pointer;
+
+  span {
+    color: $secondary-gray;
+  }
+}
+
+.filter-range-element {
+  margin-bottom: 8px;
+  display: block;
+}

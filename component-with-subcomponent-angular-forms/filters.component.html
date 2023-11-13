@@ -1,0 +1,73 @@
+<div [formGroup]="multipleSelectForm" class="d-flex">
+  <ng-container *ngFor="let filterBlock of filters">
+    <ng-container *ngIf="filterBlock.groups.length > 1">
+      <filter-dropdown
+        [filter]="null"
+        [title]="filterBlock.title"
+        [id]="'filters'"
+        [isFirstLevelDropdown]="true"
+        [icon]="filterBlock.svgIconName"
+        [multipleFiltersBlock]="true"
+        (filterTapEvent)="filterTapEvent.emit($event)"
+        class="filter-dropdown-button-wrapper ms-xl-3">
+        <ng-container *ngFor="let group of filterBlock.groups; let index = index">
+          <div [ngClass]="{'mb-4': index !== filterBlock.groups.length - 1}">
+            <ng-container [ngSwitch]="group.type">
+              <ng-container *ngSwitchCase="FilterGroupTypesEnum.CHECKBOX">
+                <div class="d-flex justify-content-between filter-checkbox-wrapper">
+                  <p *ngIf="group" class="filter-toggle-title p1-regular">{{group.title}}</p>
+                  <toggle (click)="setNewCheckboxValue(group.id)" formControlName="{{group.id}}"></toggle>
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="FilterGroupTypesEnum.DROPDOWN">
+                <filter-dropdown [filter]="group"
+                                        formControlName="{{group.id}}">
+                </filter-dropdown>
+              </ng-container>
+              <ng-container *ngSwitchCase="FilterGroupTypesEnum.SUBVIEW">
+                <div class="subview-name-container d-flex justify-content-between mb-2">
+                  <p class="p2-regular">{{group.title}}</p>
+                  <div class="subview-reset" (click)="resetFilters(group)">
+                    <span class="p2-regular">Сбросить</span>
+                  </div>
+                </div>
+                <ng-container *ngFor="let value of group.values; let index = index">
+                  <range
+                    class="filter-range-element"
+                    formControlName="{{value.id}}"
+                    [config]="{
+                          min: +this.value.min,
+                          max: +this.value.max,
+                          startMin: +this.value.currentMin,
+                          startMax: +this.value.currentMax,
+                          step: +this.value.step,
+                          name: this.value.name}"
+                  ></range>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </div>
+        </ng-container>
+        <button class="reset-all-button"
+                Button
+                [disabled]="isResetButtonDisabled"
+                (click)="resetFilters()">Сбросить все
+        </button>
+      </filter-dropdown>
+    </ng-container>
+
+    <ng-container *ngIf="filterBlock.groups.length === 1">
+      <filter-dropdown
+        formControlName="{{filterBlock.groups[0].id}}"
+        [filter]="filterBlock.groups[0]"
+        [title]="filterBlock.title"
+        [id]="filterBlock.groups[0].id"
+        [isFirstLevelDropdown]="true"
+        [icon]="filterBlock.svgIconName"
+        [multipleFiltersBlock]="false"
+        (filterTapEvent)="filterTapEvent.emit($event)"
+        class="filter-dropdown-button-wrapper ms-xl-3">
+      </filter-dropdown>
+    </ng-container>
+  </ng-container>
+</div>
